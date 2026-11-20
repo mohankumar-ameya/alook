@@ -1,5 +1,5 @@
 import { createInterface } from "readline";
-import { DEV_PASSWORD } from "@alook/shared";
+import { BUSINESS_SCHEMA_VERSION, COMMUNITY_CONTRACT_HEADER, DEV_PASSWORD } from "@alook/shared";
 import { SELF_HOSTED_DIR } from "./constants.js";
 import { join } from "path";
 
@@ -93,6 +93,7 @@ export async function createPairingToken(baseURL: string, cookie: string): Promi
       "Content-Type": "application/json",
       Origin: baseURL,
       Cookie: cookie,
+      [COMMUNITY_CONTRACT_HEADER]: String(BUSINESS_SCHEMA_VERSION),
     },
   });
 

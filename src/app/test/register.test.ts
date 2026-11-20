@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-vi.mock("@alook/shared", () => ({ DEV_PASSWORD: "dev-pw" }));
+vi.mock("@alook/shared", async (importOriginal) => ({ ...(await importOriginal<typeof import("@alook/shared")>()), DEV_PASSWORD: "dev-pw" }));
 vi.mock("../src/lib/constants.js", () => ({ SELF_HOSTED_DIR: "/tmp/alook-test" }));
 
 import {
@@ -75,7 +75,7 @@ describe("createPairingToken", () => {
     expect(result.tokenId).toBe("cmt_pair");
     expect(fetchMock).toHaveBeenCalledWith(`${BASE}/api/community/machines/pair`, expect.objectContaining({
       method: "POST",
-      headers: expect.objectContaining({ Cookie: "session-cookie", Origin: BASE }),
+      headers: expect.objectContaining({ Cookie: "session-cookie", Origin: BASE, "X-Alook-Community-Contract": "10" }),
     }));
   });
 
